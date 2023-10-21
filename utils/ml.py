@@ -70,6 +70,17 @@ class MOVotingRegressor(VotingRegressor):
 
         return avg_pred
     
+    def predict_variance(self, X):
+        check_is_fitted(self)
+
+        pred = self._predict(X)
+        var_pred = np.var(self._predict(X), axis=-1)
+
+        if len(pred.shape) > 0:
+            var_pred = var_pred.T
+
+        return var_pred
+    
 def build_mlp_model(meta, 
                     hidden_layer_sizes: Tuple[int] = (24,),
                     nonlin: Union[str, None] = 'leaky_relu',
